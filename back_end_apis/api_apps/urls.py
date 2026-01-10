@@ -6,7 +6,11 @@ from .views import (
     ChurnRiskDistributionAPI,
     CampaignPerformanceAPI,
     RecentCampaignsAPI,
-    DashboardSummaryAPI
+    DashboardSummaryAPI,
+    SegmentListAPI,
+    SegmentCreateAPI,
+    SegmentDetailAPI,
+    SegmentDeleteAPI
 )
 
 urlpatterns = [
@@ -19,4 +23,10 @@ urlpatterns = [
     
     # Combined API
     path('summary/', DashboardSummaryAPI.as_view(), name='dashboard-summary'),
+
+    # Segmentation APIs
+    path('segments/', SegmentListAPI.as_view(), name='segment-list'),
+    path('segments/create/', SegmentCreateAPI.as_view(), name='segment-create'),
+    path('segments/<str:segment_id>/', SegmentDetailAPI.as_view(), name='segment-detail'),
+    path('segments/<str:segment_id>/delete/', SegmentDeleteAPI.as_view(), name='segment-delete'),
 ]
