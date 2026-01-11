@@ -10,7 +10,23 @@ from .views import (
     SegmentListAPI,
     SegmentCreateAPI,
     SegmentDetailAPI,
-    SegmentDeleteAPI
+    SegmentDeleteAPI,
+    RewardAccountListAPI,
+    RewardAccountCreateAPI,
+    RewardAccountDetailAPI,
+    RewardAccountDeleteAPI,
+    CampaignListAPI,
+    CampaignCreateAPI,
+    CampaignDetailAPI,
+    CampaignDeleteAPI,
+    CampaignApprovalAPI,
+    CampaignSubmitAPI,
+    CampaignApprovalTrailsAPI,
+    CampaignAudienceAPI,
+    CampaignChannelsAPI,
+    CampaignRewardsAPI,
+    CampaignPerformanceAPI as CampaignPerformanceTabAPI,
+    CampaignLogsAPI
 )
 
 urlpatterns = [
@@ -29,4 +45,24 @@ urlpatterns = [
     path('segments/create/', SegmentCreateAPI.as_view(), name='segment-create'),
     path('segments/<str:segment_id>/', SegmentDetailAPI.as_view(), name='segment-detail'),
     path('segments/<str:segment_id>/delete/', SegmentDeleteAPI.as_view(), name='segment-delete'),
+
+    # Reward Account APIs
+    path('reward-accounts/', RewardAccountListAPI.as_view(), name='reward-account-list'),
+    path('reward-accounts/create/', RewardAccountCreateAPI.as_view(), name='reward-account-create'),
+    path('reward-accounts/<int:account_id>/', RewardAccountDetailAPI.as_view(), name='reward-account-detail'),
+    path('reward-accounts/<int:account_id>/delete/', RewardAccountDeleteAPI.as_view(), name='reward-account-delete'),
+
+    # Campaign APIs
+    path('campaigns/', CampaignListAPI.as_view(), name='campaign-list'),
+    path('campaigns/create/', CampaignCreateAPI.as_view(), name='campaign-create'),
+    path('campaigns/<uuid:campaign_id>/', CampaignDetailAPI.as_view(), name='campaign-detail'),
+    path('campaigns/<uuid:campaign_id>/delete/', CampaignDeleteAPI.as_view(), name='campaign-delete'),
+    path('campaigns/<uuid:campaign_id>/approve/', CampaignApprovalAPI.as_view(), name='campaign-approve'),
+    path('campaigns/<uuid:campaign_id>/submit/', CampaignSubmitAPI.as_view(), name='campaign-submit'),
+    path('campaigns/<uuid:campaign_id>/approval-trails/', CampaignApprovalTrailsAPI.as_view(), name='campaign-approval-trails'),
+    path('campaigns/<uuid:campaign_id>/audience/', CampaignAudienceAPI.as_view(), name='campaign-audience'),
+    path('campaigns/<uuid:campaign_id>/channels/', CampaignChannelsAPI.as_view(), name='campaign-channels'),
+    path('campaigns/<uuid:campaign_id>/rewards/', CampaignRewardsAPI.as_view(), name='campaign-rewards'),
+    path('campaigns/<uuid:campaign_id>/performance/', CampaignPerformanceTabAPI.as_view(), name='campaign-performance-tab'),
+    path('campaigns/<uuid:campaign_id>/logs/', CampaignLogsAPI.as_view(), name='campaign-logs'),
 ]
