@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, User, MapPin, Phone, Mail, Calendar, CreditCard, Gift, MessageSquare, TrendingUp, AlertTriangle, Shield } from "lucide-react";
+import { Search, User, MapPin, Calendar, CreditCard, Gift, TrendingUp, Shield } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -37,12 +37,6 @@ const campaigns = [
   { id: 1, name: "Festive Rewards", date: "2024-01-05", status: "Delivered", reward: "KES 50" },
   { id: 2, name: "New Year Promo", date: "2023-12-31", status: "Activated", reward: "KES 100" },
   { id: 3, name: "Loyalty Bonus", date: "2023-12-15", status: "Delivered", reward: "-" },
-];
-
-const messages = [
-  { id: 1, date: "2024-01-15", channel: "SMS", content: "Your M-Pesa balance is..." },
-  { id: 2, date: "2024-01-10", channel: "Push", content: "Enjoy 10% cashback on..." },
-  { id: 3, date: "2024-01-05", channel: "SMS", content: "Happy New Year! Get your..." },
 ];
 
 export default function Customer360() {
@@ -174,10 +168,6 @@ export default function Customer360() {
                     <Gift className="w-4 h-4" />
                     Campaigns
                   </TabsTrigger>
-                  <TabsTrigger value="messages" className="gap-2">
-                    <MessageSquare className="w-4 h-4" />
-                    Messages
-                  </TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="transactions" className="space-y-3">
@@ -232,22 +222,6 @@ export default function Customer360() {
                   ))}
                 </TabsContent>
 
-                <TabsContent value="messages" className="space-y-3">
-                  {messages.map((msg) => (
-                    <div key={msg.id} className="flex items-start gap-3 p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors">
-                      <div className="p-2 rounded-lg bg-accent">
-                        <MessageSquare className="w-4 h-4 text-accent-foreground" />
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <Badge variant="secondary" className="text-xs">{msg.channel}</Badge>
-                          <span className="text-sm text-muted-foreground">{msg.date}</span>
-                        </div>
-                        <p className="text-sm">{msg.content}</p>
-                      </div>
-                    </div>
-                  ))}
-                </TabsContent>
               </Tabs>
             </CardContent>
           </Card>

@@ -1,227 +1,248 @@
-import { Download, Calendar, BarChart, FileText, Clock, Mail } from "lucide-react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { FileText, Search, Eye, Clock } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-
-const recentReports = [
-  {
-    id: 1,
-    name: "Campaign Performance - January 2024",
-    type: "Campaign",
-    generatedAt: "2024-01-15 09:00",
-    format: "Excel",
-    size: "2.4 MB",
-  },
-  {
-    id: 2,
-    name: "Customer Segmentation Analysis",
-    type: "Segmentation",
-    generatedAt: "2024-01-14 14:30",
-    format: "PDF",
-    size: "1.8 MB",
-  },
-  {
-    id: 3,
-    name: "Weekly Transaction Summary",
-    type: "Transaction",
-    generatedAt: "2024-01-14 08:00",
-    format: "Excel",
-    size: "5.2 MB",
-  },
-  {
-    id: 4,
-    name: "Churn Risk Report",
-    type: "AI Insight",
-    generatedAt: "2024-01-13 16:00",
-    format: "PDF",
-    size: "890 KB",
-  },
-];
-
-const scheduledReports = [
-  {
-    id: 1,
-    name: "Daily Transaction Summary",
-    frequency: "Daily",
-    nextRun: "2024-01-16 06:00",
-    recipients: ["team@mpesa.co.ke"],
-  },
-  {
-    id: 2,
-    name: "Weekly Campaign Performance",
-    frequency: "Weekly",
-    nextRun: "2024-01-22 09:00",
-    recipients: ["marketing@mpesa.co.ke", "ops@mpesa.co.ke"],
-  },
-  {
-    id: 3,
-    name: "Monthly Executive Summary",
-    frequency: "Monthly",
-    nextRun: "2024-02-01 08:00",
-    recipients: ["executive@mpesa.co.ke"],
-  },
-];
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+import { useReports } from "@/hooks/useReports";
+import type { Report } from "@/services/reportApi";
 
 export default function Reports() {
+  const navigate = useNavigate();
+  const [page, setPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [sourceTypeFilter, setSourceTypeFilter] = useState("all");
+  const [formatFilter, setFormatFilter] = useState("all");
+  const pageSize = 10;
+
+  const { data, isLoading } = useReports(page, pageSize, debouncedSearch, sourceTypeFilter, formatFilter);
+
+  const handleSearch = (value: string) => {
+    setSearchQuery(value);
+    // Simple debounce
+    setTimeout(() => {
+      setDebouncedSearch(value);
+      setPage(1);
+    }, 300);
+  };
+
+  const handleFilterChange = (type: "source" | "format", value: string) => {
+    if (type === "source") {
+      setSourceTypeFilter(value);
+    } else {
+      setFormatFilter(value);
+    }
+    setPage(1);
+  };
+
+  const getSchedulingDisplay = (report: Report) => {
+    if (!report.scheduling?.enabled) {
+      return <Badge variant="secondary">Manual</Badge>;
+    }
+    return (
+      <div className="flex items-center gap-2">
+        <Badge variant="outline" className="capitalize">
+          <Clock className="w-3 h-3 mr-1" />
+          {report.scheduling.frequency}
+        </Badge>
+      </div>
+    );
+  };
+
+  const getFormatBadge = (format: string) => {
+    const variants: Record<string, "default" | "secondary" | "outline"> = {
+      pdf: "default",
+      excel: "secondary",
+      csv: "outline",
+    };
+    return (
+      <Badge variant={variants[format] || "secondary"} className="uppercase">
+        {format}
+      </Badge>
+    );
+  };
+
+  const getSourceTypeBadge = (sourceType: string) => {
+    return (
+      <Badge variant={sourceType === "campaign" ? "default" : "outline"} className="capitalize">
+        {sourceType}
+      </Badge>
+    );
+  };
+
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold">Reports</h1>
-          <p className="text-muted-foreground">Generate and manage engagement reports</p>
+          <p className="text-muted-foreground">View and manage all generated reports</p>
         </div>
-        <Button className="gap-2">
+        <Button className="gap-2" onClick={() => navigate("/reports/create")}>
           <FileText className="w-4 h-4" />
           Create Report
         </Button>
       </div>
 
-      {/* Quick Reports */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="card-hover cursor-pointer">
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-4">
-              <div className="p-3 rounded-lg bg-primary/10">
-                <BarChart className="w-6 h-6 text-primary" />
-              </div>
-              <div>
-                <p className="font-semibold">Campaign Report</p>
-                <p className="text-sm text-muted-foreground">Performance metrics</p>
-              </div>
+      {/* Filters Section */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg">Search & Filter</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+              <Input
+                placeholder="Search reports by name..."
+                value={searchQuery}
+                onChange={(e) => handleSearch(e.target.value)}
+                className="pl-10"
+              />
             </div>
-          </CardContent>
-        </Card>
-        <Card className="card-hover cursor-pointer">
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-4">
-              <div className="p-3 rounded-lg bg-info/10">
-                <FileText className="w-6 h-6 text-info" />
-              </div>
-              <div>
-                <p className="font-semibold">Segment Analysis</p>
-                <p className="text-sm text-muted-foreground">Customer insights</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        <Card className="card-hover cursor-pointer">
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-4">
-              <div className="p-3 rounded-lg bg-success/10">
-                <Calendar className="w-6 h-6 text-success" />
-              </div>
-              <div>
-                <p className="font-semibold">Transaction Report</p>
-                <p className="text-sm text-muted-foreground">Activity summary</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        <Card className="card-hover cursor-pointer">
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-4">
-              <div className="p-3 rounded-lg bg-warning/10">
-                <Clock className="w-6 h-6 text-warning" />
-              </div>
-              <div>
-                <p className="font-semibold">Scheduled Reports</p>
-                <p className="text-sm text-muted-foreground">Manage automation</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Recent Reports */}
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>Recent Reports</CardTitle>
-            <Select defaultValue="all">
-              <SelectTrigger className="w-32">
-                <SelectValue placeholder="Filter" />
+            <Select value={sourceTypeFilter} onValueChange={(v) => handleFilterChange("source", v)}>
+              <SelectTrigger className="w-full sm:w-40">
+                <SelectValue placeholder="Source Type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Types</SelectItem>
+                <SelectItem value="all">All Sources</SelectItem>
                 <SelectItem value="campaign">Campaign</SelectItem>
-                <SelectItem value="segment">Segmentation</SelectItem>
-                <SelectItem value="transaction">Transaction</SelectItem>
+                <SelectItem value="custom">Custom</SelectItem>
               </SelectContent>
             </Select>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {recentReports.map((report) => (
-                <div
-                  key={report.id}
-                  className="flex items-center justify-between p-4 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-lg bg-accent">
-                      <FileText className="w-4 h-4 text-accent-foreground" />
-                    </div>
-                    <div>
-                      <p className="font-medium">{report.name}</p>
-                      <div className="flex items-center gap-2 mt-1">
-                        <Badge variant="secondary" className="text-xs">{report.type}</Badge>
-                        <span className="text-xs text-muted-foreground">{report.generatedAt}</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="text-right">
-                      <p className="text-sm font-medium">{report.format}</p>
-                      <p className="text-xs text-muted-foreground">{report.size}</p>
-                    </div>
-                    <Button variant="ghost" size="icon">
-                      <Download className="w-4 h-4" />
-                    </Button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+            <Select value={formatFilter} onValueChange={(v) => handleFilterChange("format", v)}>
+              <SelectTrigger className="w-full sm:w-40">
+                <SelectValue placeholder="Format" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Formats</SelectItem>
+                <SelectItem value="pdf">PDF</SelectItem>
+                <SelectItem value="excel">Excel</SelectItem>
+                <SelectItem value="csv">CSV</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </CardContent>
+      </Card>
 
-        {/* Scheduled Reports */}
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>Scheduled Reports</CardTitle>
-            <Button variant="outline" size="sm" className="gap-2">
-              <Clock className="w-4 h-4" />
-              Add Schedule
-            </Button>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {scheduledReports.map((report) => (
-                <div
-                  key={report.id}
-                  className="p-4 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors"
-                >
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <p className="font-medium">{report.name}</p>
-                      <div className="flex items-center gap-2 mt-1">
-                        <Badge variant="outline" className="text-xs">{report.frequency}</Badge>
-                        <span className="text-xs text-muted-foreground">Next: {report.nextRun}</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2 mt-3">
-                    <Mail className="w-3 h-3 text-muted-foreground" />
-                    <span className="text-xs text-muted-foreground">
-                      {report.recipients.join(", ")}
-                    </span>
-                  </div>
-                </div>
-              ))}
+      {/* Reports Table */}
+      <Card>
+        <CardContent className="p-0">
+          {isLoading ? (
+            <div className="flex items-center justify-center h-64">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
             </div>
-          </CardContent>
-        </Card>
-      </div>
+          ) : (
+            <>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Name</TableHead>
+                    <TableHead>Source Type</TableHead>
+                    <TableHead>Scheduling</TableHead>
+                    <TableHead>Export Format</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {data?.reports && data.reports.length > 0 ? (
+                    data.reports.map((report) => (
+                      <TableRow key={report.id}>
+                        <TableCell>
+                          <div>
+                            <p className="font-medium">{report.name}</p>
+                            {report.description && (
+                              <p className="text-sm text-muted-foreground truncate max-w-xs">
+                                {report.description}
+                              </p>
+                            )}
+                          </div>
+                        </TableCell>
+                        <TableCell>{getSourceTypeBadge(report.source_type)}</TableCell>
+                        <TableCell>{getSchedulingDisplay(report)}</TableCell>
+                        <TableCell>{getFormatBadge(report.export_format)}</TableCell>
+                        <TableCell>
+                          <div className="flex items-center justify-end">
+                            <Button 
+                              variant="ghost" 
+                              size="icon" 
+                              title="View"
+                              onClick={() => navigate(`/reports/${report.id}`)}
+                            >
+                              <Eye className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
+                        No reports found
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+
+              {/* Pagination */}
+              {data?.pagination && data.pagination.total_pages > 1 && (
+                <div className="flex items-center justify-between px-4 py-4 border-t">
+                  <p className="text-sm text-muted-foreground">
+                    Showing {((page - 1) * pageSize) + 1} to {Math.min(page * pageSize, data.pagination.total)} of {data.pagination.total} reports
+                  </p>
+                  <Pagination>
+                    <PaginationContent>
+                      <PaginationItem>
+                        <PaginationPrevious
+                          onClick={() => setPage((p) => Math.max(1, p - 1))}
+                          className={page === 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                        />
+                      </PaginationItem>
+                      {Array.from({ length: data.pagination.total_pages }, (_, i) => i + 1).map((pageNum) => (
+                        <PaginationItem key={pageNum}>
+                          <PaginationLink
+                            onClick={() => setPage(pageNum)}
+                            isActive={page === pageNum}
+                            className="cursor-pointer"
+                          >
+                            {pageNum}
+                          </PaginationLink>
+                        </PaginationItem>
+                      ))}
+                      <PaginationItem>
+                        <PaginationNext
+                          onClick={() => setPage((p) => Math.min(data.pagination.total_pages, p + 1))}
+                          className={page === data.pagination.total_pages ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                        />
+                      </PaginationItem>
+                    </PaginationContent>
+                  </Pagination>
+                </div>
+              )}
+            </>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }

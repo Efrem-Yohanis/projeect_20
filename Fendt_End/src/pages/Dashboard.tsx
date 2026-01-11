@@ -2,7 +2,6 @@ import { Users, UserCheck, UserPlus, TrendingDown, Moon } from "lucide-react";
 import { MetricCard } from "@/components/dashboard/MetricCard";
 import { ActivityChart } from "@/components/dashboard/ActivityChart";
 import { CampaignPerformance } from "@/components/dashboard/CampaignPerformance";
-import { RecentCampaigns } from "@/components/dashboard/RecentCampaigns";
 import { ChurnRiskWidget } from "@/components/dashboard/ChurnRiskWidget";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
@@ -74,16 +73,13 @@ export default function Dashboard() {
         />
       </div>
 
-      {/* Charts Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <ActivityChart />
-        <ChurnRiskWidget />
-      </div>
+      {/* Full Width Activity Chart */}
+      <ActivityChart />
 
       {/* Bottom Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <CampaignPerformance />
-        <RecentCampaigns />
+        <ChurnRiskWidget />
       </div>
     </div>
   );

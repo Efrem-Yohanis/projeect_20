@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, Play, HelpCircle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -27,7 +27,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useCreateSegment } from "@/hooks/useSegments";
+import { useSegmentDetail, useUpdateSegment } from "@/hooks/useSegments";
 import type { SegmentCreateRequest, SegmentFilters } from "@/services/segmentApi";
 
 interface FilterState {
@@ -64,8 +64,10 @@ const initialFilters: FilterState = {
   valueTier: "",
 };
 
-export default function SegmentCreation() {
+export default function SegmentEdit() {
   const navigate = useNavigate();
+  const { id } = useParams();
+  
   const [segmentName, setSegmentName] = useState("");
   const [description, setDescription] = useState("");
   const [autoRefresh, setAutoRefresh] = useState(false);
@@ -74,7 +76,42 @@ export default function SegmentCreation() {
   const [ruleLogic, setRuleLogic] = useState<"AND" | "OR">("AND");
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
-  const createSegmentMutation = useCreateSegment();
+  const { data, isLoading } = useSegmentDetail(id || "");
+  const updateSegmentMutation = useUpdateSegment(id || "");
+
+  // Populate form with existing segment data
+  useEffect(() => {
+    if (data?.segment) {
+      const segment = data.segment;
+      setSegmentName(segment.name || "");
+      setDescription(segment.description || "");
+      
+      // Extract filters from criteria if available
+      const criteria = segment.criteria || {};
+      const behavioral = criteria.behavioral || {};
+      const demographic = criteria.demographic || {};
+      const value = criteria.value || {};
+      
+      setFilters({
+        lastActivity: behavioral.lastActivityDays?.toString() || "",
+        transactionCountMin: behavioral.transactionCount?.min?.toString() || "",
+        transactionCountMax: behavioral.transactionCount?.max?.toString() || "",
+        transactionValueMin: behavioral.transactionValue?.min?.toString() || "",
+        transactionValueMax: behavioral.transactionValue?.max?.toString() || "",
+        rewardReceived: behavioral.rewardReceived || "",
+        churnRisk: behavioral.churnRisk || "",
+        region: demographic.region || "",
+        city: demographic.city || "",
+        gender: demographic.gender || "",
+        ageGroup: demographic.ageGroup || "",
+        kycLevel: demographic.kycLevel || "",
+        deviceType: demographic.deviceType || "",
+        valueTier: value.tier || "",
+      });
+      
+      setRuleLogic(criteria.rule_logic || "AND");
+    }
+  }, [data]);
 
   const updateFilter = (key: keyof FilterState, value: string) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
@@ -141,25 +178,33 @@ export default function SegmentCreation() {
 
   const confirmActivation = async () => {
     try {
-      await createSegmentMutation.mutateAsync(buildApiPayload());
+      await updateSegmentMutation.mutateAsync(buildApiPayload());
       setShowConfirmModal(false);
-      navigate("/segmentation");
+      navigate(`/segmentation/${id}`);
     } catch (error) {
       // Error handled by mutation
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <Button variant="ghost" size="icon" onClick={() => navigate("/segmentation")}>
+          <Button variant="ghost" size="icon" onClick={() => navigate(`/segmentation/${id}`)}>
             <ArrowLeft className="w-5 h-5" />
           </Button>
           <div>
-            <h1 className="text-2xl font-bold">Create Segment</h1>
-            <p className="text-muted-foreground">Define segment rules and preview customers</p>
+            <h1 className="text-2xl font-bold">Edit Segment</h1>
+            <p className="text-muted-foreground">Modify segment rules and settings</p>
           </div>
         </div>
         <Tooltip>
@@ -174,7 +219,7 @@ export default function SegmentCreation() {
         </Tooltip>
       </div>
 
-      {/* Segment Name & Type */}
+      {/* Segment Name */}
       <Card>
         <CardHeader>
           <CardTitle>Segment Details</CardTitle>
@@ -447,9 +492,9 @@ export default function SegmentCreation() {
         <Button 
           onClick={handleSaveAndActivate} 
           className="gap-2"
-          disabled={!segmentName || createSegmentMutation.isPending}
+          disabled={!segmentName || updateSegmentMutation.isPending}
         >
-          {createSegmentMutation.isPending ? (
+          {updateSegmentMutation.isPending ? (
             <Loader2 className="w-4 h-4 animate-spin" />
           ) : (
             <Play className="w-4 h-4" />
@@ -462,9 +507,9 @@ export default function SegmentCreation() {
       <Dialog open={showConfirmModal} onOpenChange={setShowConfirmModal}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Confirm Segment Creation</DialogTitle>
+            <DialogTitle>Confirm Segment Update</DialogTitle>
             <DialogDescription>
-              Please review the segment details before creating.
+              Please review the segment details before saving.
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
@@ -490,14 +535,14 @@ export default function SegmentCreation() {
             <Button 
               onClick={confirmActivation} 
               className="gap-2"
-              disabled={createSegmentMutation.isPending}
+              disabled={updateSegmentMutation.isPending}
             >
-              {createSegmentMutation.isPending ? (
+              {updateSegmentMutation.isPending ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
               ) : (
                 <Play className="w-4 h-4" />
               )}
-              Confirm & Create
+              Confirm & Save
             </Button>
           </DialogFooter>
         </DialogContent>

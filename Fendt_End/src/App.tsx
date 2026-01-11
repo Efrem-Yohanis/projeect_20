@@ -4,10 +4,13 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AppLayout } from "@/components/layout/AppLayout";
+import Login from "./pages/Login";
+import ForgotPassword from "./pages/ForgotPassword";
 import Dashboard from "./pages/Dashboard";
 import Segmentation from "./pages/Segmentation";
 import SegmentDetail from "./pages/SegmentDetail";
 import SegmentCreation from "./pages/SegmentCreation";
+import SegmentEdit from "./pages/SegmentEdit";
 import Campaigns from "./pages/Campaigns";
 import CampaignCreate from "./pages/CampaignCreate";
 import CampaignDetail from "./pages/CampaignDetail";
@@ -16,6 +19,9 @@ import CampaignListForApprover from "./pages/CampaignListForApprover";
 import AIInsights from "./pages/AIInsights";
 import Customer360 from "./pages/Customer360";
 import Reports from "./pages/Reports";
+import ReportCreate from "./pages/ReportCreate";
+import ReportDetail from "./pages/ReportDetail";
+import ReportEdit from "./pages/ReportEdit";
 import RewardAccountManagement from "./pages/RewardAccountManagement";
 import Configuration from "./pages/Configuration";
 import MpesaCoreDetail from "./pages/configuration/MpesaCoreDetail";
@@ -26,6 +32,12 @@ import RewardAccountDetail from "./pages/configuration/RewardAccountDetail";
 import EmailServiceDetail from "./pages/configuration/EmailServiceDetail";
 import IvrConfigDetail from "./pages/configuration/IvrConfigDetail";
 import DatabaseDetail from "./pages/configuration/DatabaseDetail";
+import UserManagement from "./pages/admin/UserManagement";
+import AddUser from "./pages/admin/AddUser";
+import EditUser from "./pages/admin/EditUser";
+import ManageRoles from "./pages/admin/ManageRoles";
+import RolePermissions from "./pages/admin/RolePermissions";
+import AuditLogs from "./pages/admin/AuditLogs";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -38,6 +50,8 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           {/* Standalone pages - no sidebar/header */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/campaigns/:id/approval" element={<CampaignApproval />} />
           <Route path="/list_comain_to_me" element={<CampaignListForApprover />} />
           
@@ -51,6 +65,7 @@ const App = () => (
                   <Route path="/segmentation" element={<Segmentation />} />
                   <Route path="/segmentation/create" element={<SegmentCreation />} />
                   <Route path="/segmentation/:id" element={<SegmentDetail />} />
+                  <Route path="/segmentation/:id/edit" element={<SegmentEdit />} />
                   <Route path="/campaigns" element={<Campaigns />} />
                   <Route path="/campaigns/create" element={<CampaignCreate />} />
                   <Route path="/campaigns/:id" element={<CampaignDetail />} />
@@ -58,6 +73,9 @@ const App = () => (
                   <Route path="/ai-insights" element={<AIInsights />} />
                   <Route path="/customer-360" element={<Customer360 />} />
                   <Route path="/reports" element={<Reports />} />
+                  <Route path="/reports/create" element={<ReportCreate />} />
+                  <Route path="/reports/:id" element={<ReportDetail />} />
+                  <Route path="/reports/:id/edit" element={<ReportEdit />} />
                   <Route path="/reward-accounts" element={<RewardAccountManagement />} />
                   <Route path="/configuration" element={<Configuration />} />
                   <Route path="/configuration/mpesa-core" element={<MpesaCoreDetail />} />
@@ -68,6 +86,12 @@ const App = () => (
                   <Route path="/configuration/email-service" element={<EmailServiceDetail />} />
                   <Route path="/configuration/ivr-config" element={<IvrConfigDetail />} />
                   <Route path="/configuration/database" element={<DatabaseDetail />} />
+                  <Route path="/admin/users" element={<UserManagement />} />
+                  <Route path="/admin/users/add" element={<AddUser />} />
+                  <Route path="/admin/users/:id/edit" element={<EditUser />} />
+                  <Route path="/admin/users/:id/roles" element={<ManageRoles />} />
+                  <Route path="/admin/permissions" element={<RolePermissions />} />
+                  <Route path="/admin/audit-logs" element={<AuditLogs />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </AppLayout>
