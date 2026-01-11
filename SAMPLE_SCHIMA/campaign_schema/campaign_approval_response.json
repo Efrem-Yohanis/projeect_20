@@ -1,0 +1,16 @@
+{
+  "status": "success",
+  "message": "Campaign approved successfully",
+  "approval_trail": {
+    "id": 1,
+    "campaign": "550e8400-e29b-41d4-a716-446655440000",
+    "approver": {
+      "id": 2,
+      "username": "approver_user",
+      "email": "approver@company.com"
+    },
+    "decision": "approved",
+    "comment": "Campaign approved for execution. Budget and targeting look good.",
+    "created_at": "2023-11-16T11:30:00Z"
+  }
+}

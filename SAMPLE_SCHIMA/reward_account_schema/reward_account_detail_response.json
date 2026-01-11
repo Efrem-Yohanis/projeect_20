@@ -1,0 +1,28 @@
+{
+  "method": "GET",
+  "endpoint": "/api/reward-accounts/{account_id}/",
+  "description": "Get details of a specific reward account",
+  "path_parameters": {
+    "account_id": {
+      "type": "integer",
+      "description": "ID of the reward account"
+    }
+  },
+  "response": {
+    "status": "success",
+    "account": {
+      "id": 1,
+      "account_id": "ACC_001",
+      "account_name": "Marketing Budget 2024",
+      "balance": 50000.00,
+      "formatted_balance": "50,000.00 ETB",
+      "currency": "ETB",
+      "status": "active",
+      "is_available": true,
+      "assigned_campaigns_count": 3,
+      "assigned_campaigns": [],
+      "created_at": "2024-01-15T10:30:00Z",
+      "updated_at": "2024-01-15T10:30:00Z"
+    }
+  }
+}

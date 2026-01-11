@@ -1,0 +1,33 @@
+{
+  "method": "POST",
+  "endpoint": "/api/reports/",
+  "description": "Create a report with custom filter criteria",
+  "request_body": {
+    "name": "New Customer Analysis",
+    "description": "Analysis of customers registered in the last quarter.",
+    "source_type": "custom",
+    "source_config": {
+      "campaign_id": null,
+      "custom_mode": "filter",
+      "sql_query": null,
+      "filters": [
+        {
+          "field": "registration_date",
+          "operator": "greater_than",
+          "value": "2023-01-01"
+        },
+        {
+          "field": "status",
+          "operator": "equals",
+          "value": "active"
+        }
+      ]
+    },
+    "export_format": "excel",
+    "scheduling": {
+      "enabled": true,
+      "frequency": "monthly",
+      "recipients": ["analyst@company.com"]
+    }
+  }
+}

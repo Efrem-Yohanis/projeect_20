@@ -1,0 +1,31 @@
+{
+  "name": "Updated Q4 Revenue Analysis",
+  "description": "An updated detailed breakdown of revenue by region and product line for the final quarter with additional metrics.",
+  "source_type": "custom",
+  "source_config": {
+    "custom_mode": "filter",
+    "filters": [
+      {
+        "field": "transaction_value",
+        "operator": "greater_than",
+        "value": "1500"
+      },
+      {
+        "field": "region",
+        "operator": "equals",
+        "value": "North America"
+      },
+      {
+        "field": "product_category",
+        "operator": "not_equals",
+        "value": "Services"
+      }
+    ]
+  },
+  "export_format": "excel",
+  "scheduling": {
+    "enabled": true,
+    "frequency": "weekly",
+    "recipients": ["finance-team@company.com", "exec-office@company.com", "regional-managers@company.com"]
+  }
+}

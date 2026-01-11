@@ -1,0 +1,9 @@
+{
+  "method": "DELETE",
+  "endpoint": "/api/segments/{id}/delete/",
+  "description": "Delete a specific segment",
+  "response": {
+    "status": "success",
+    "message": "Segment deleted successfully"
+  }
+}

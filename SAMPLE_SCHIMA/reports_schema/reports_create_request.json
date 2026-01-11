@@ -1,0 +1,32 @@
+{
+  "method": "POST",
+  "endpoint": "/api/reports/",
+  "description": "Create a new report and queue it for generation",
+  "request_body": {
+    "name": "Monthly Campaign Performance Report",
+    "description": "Analysis of the Holiday Cashback Promo results.",
+    "source_type": "campaign",
+    "source_config": {
+      "campaign_id": "camp-1",
+      "custom_mode": null,
+      "sql_query": null,
+      "filters": []
+    },
+    "export_format": "pdf",
+    "scheduling": {
+      "enabled": true,
+      "frequency": "weekly",
+      "recipients": ["manager@company.com", "analyst@company.com"]
+    }
+  },
+  "response": {
+    "success": true,
+    "message": "Report created and queued for generation.",
+    "data": {
+      "id": "rpt-9923",
+      "name": "Monthly Campaign Performance Report",
+      "status": "pending",
+      "created_at": "2026-01-11T11:35:00Z"
+    }
+  }
+}

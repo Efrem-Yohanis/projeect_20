@@ -661,3 +661,696 @@ class MockDataGenerator:
             'formatted_customer_count': f"{new_count:,}",
             'last_refresh': now.isoformat() + 'Z'
         }
+    
+    @staticmethod
+    def get_report_configurations():
+        """Generate mock report configurations"""
+        return [
+            {
+                "id": "550e8400-e29b-41d4-a716-446655440001",
+                "name": "Monthly Campaign Performance Report",
+                "description": "Comprehensive monthly report on campaign performance metrics",
+                "source_type": "campaign",
+                "configuration": {
+                    "campaign_id": "camp-1"
+                },
+                "export_format": "pdf",
+                "scheduling": {
+                    "enabled": True,
+                    "frequency": "monthly",
+                    "recipients": ["manager@company.com", "analyst@company.com"]
+                },
+                "is_active": True,
+                "created_at": "2024-01-01T10:00:00Z",
+                "updated_at": "2024-01-15T14:30:00Z"
+            },
+            {
+                "id": "550e8400-e29b-41d4-a716-446655440002",
+                "name": "Customer Churn Analysis",
+                "description": "Weekly analysis of customer churn patterns and risk factors",
+                "source_type": "custom",
+                "configuration": {
+                    "custom_mode": "filter",
+                    "filters": [
+                        {
+                            "field": "churn_score",
+                            "operator": "greater_than",
+                            "value": "70"
+                        },
+                        {
+                            "field": "last_active",
+                            "operator": "less_than",
+                            "value": "30"
+                        }
+                    ]
+                },
+                "export_format": "excel",
+                "scheduling": {
+                    "enabled": True,
+                    "frequency": "weekly",
+                    "recipients": ["churn-team@company.com"]
+                },
+                "is_active": True,
+                "created_at": "2024-01-05T09:00:00Z",
+                "updated_at": "2024-01-10T11:15:00Z"
+            },
+            {
+                "id": "550e8400-e29b-41d4-a716-446655440003",
+                "name": "Revenue Analytics Dashboard",
+                "description": "Daily revenue metrics and trends analysis",
+                "source_type": "custom",
+                "configuration": {
+                    "custom_mode": "sql",
+                    "sql_query": "SELECT DATE(transaction_date) as date, SUM(amount) as revenue FROM transactions WHERE transaction_date >= '2024-01-01' GROUP BY DATE(transaction_date) ORDER BY date DESC"
+                },
+                "export_format": "csv",
+                "scheduling": {
+                    "enabled": True,
+                    "frequency": "daily",
+                    "recipients": ["finance@company.com", "ceo@company.com"]
+                },
+                "is_active": True,
+                "created_at": "2024-01-08T08:30:00Z",
+                "updated_at": "2024-01-12T16:45:00Z"
+            }
+        ]
+    
+    @staticmethod
+    def get_report_configuration(report_id):
+        """Get a specific report configuration by ID"""
+        configurations = MockDataGenerator.get_report_configurations()
+        for config in configurations:
+            if config['id'] == report_id:
+                return config
+        return None
+        """Generate customer view mock data"""
+        # Mock customer data based on the provided expected response
+        customers = {
+            '254712456789': {
+                "profile": {
+                    "msisdn": "254712456789",
+                    "name": "Jane Wanjiku",
+                    "initials": "JW",
+                    "status": "Active",
+                    "tier": "Gold",
+                    "kycLevel": "Full KYC",
+                    "demographics": {
+                        "gender": "Female",
+                        "age": 32,
+                        "region": "Nairobi",
+                        "city": "Westlands"
+                    },
+                    "dates": {
+                        "registered": "2021-03-15",
+                        "lastActive": "2024-01-15T14:32:00Z"
+                    }
+                },
+                "metrics": {
+                    "lifetimeValue": 245000,
+                    "monthlyAvg": 12500,
+                    "currency": "KES"
+                },
+                "aiInsights": {
+                    "churnScore": 15,
+                    "churnRisk": "Low",
+                    "recommendedAction": "Offer tier upgrade to Platinum"
+                },
+                "activities": {
+                    "transactions": [
+                        {
+                            "id": "tx_101",
+                            "date": "2024-01-15 14:32",
+                            "type": "Send Money",
+                            "amount": 2500,
+                            "status": "Completed"
+                        },
+                        {
+                            "id": "tx_102",
+                            "date": "2024-01-14 09:15",
+                            "type": "Pay Bill",
+                            "amount": 5000,
+                            "status": "Completed"
+                        }
+                    ],
+                    "campaigns": [
+                        {
+                            "id": "cmp_501",
+                            "name": "Festive Rewards",
+                            "date": "2024-01-05",
+                            "status": "Delivered",
+                            "reward": "KES 50"
+                        }
+                    ],
+                    "messages": [
+                        {
+                            "id": "msg_901",
+                            "date": "2024-01-15",
+                            "channel": "SMS",
+                            "content": "Your M-Pesa balance is..."
+                        }
+                    ]
+                }
+            }
+        }
+        
+        # Return customer data if exists, otherwise return a default mock
+        return customers.get(customer_id, {
+            "profile": {
+                "msisdn": customer_id,
+                "name": "John Doe",
+                "initials": "JD",
+                "status": "Active",
+                "tier": "Silver",
+                "kycLevel": "Basic KYC",
+                "demographics": {
+                    "gender": "Male",
+                    "age": 28,
+                    "region": "Nairobi",
+                    "city": "CBD"
+                },
+                "dates": {
+                    "registered": "2022-05-20",
+                    "lastActive": "2024-01-10T10:15:00Z"
+                }
+            },
+            "metrics": {
+                "lifetimeValue": 150000,
+                "monthlyAvg": 8500,
+                "currency": "KES"
+            },
+            "aiInsights": {
+                "churnScore": 35,
+                "churnRisk": "Medium",
+                "recommendedAction": "Send engagement campaign"
+            },
+            "activities": {
+                "transactions": [
+                    {
+                        "id": "tx_201",
+                        "date": "2024-01-10 10:15",
+                        "type": "Buy Airtime",
+                        "amount": 1000,
+                        "status": "Completed"
+                    }
+                ],
+                "campaigns": [],
+                "messages": [
+                    {
+                        "id": "msg_801",
+                        "date": "2024-01-08",
+                        "channel": "SMS",
+                        "content": "Welcome to our loyalty program!"
+                    }
+                ]
+            }
+        })
+    
+    @staticmethod
+    def get_reports_list(page=1, page_size=10):
+        """Generate mock reports list with pagination"""
+        all_reports = [
+            {
+                "id": "rpt-001",
+                "name": "Q4 Revenue Analysis",
+                "description": "A detailed breakdown of revenue by region and product line for the final quarter.",
+                "source_type": "campaign",
+                "export_format": "pdf",
+                "scheduling": {
+                    "enabled": True,
+                    "frequency": "monthly"
+                },
+                "created_at": "2024-01-10T10:00:00Z"
+            },
+            {
+                "id": "rpt-002",
+                "name": "Customer Churn SQL Export",
+                "description": "Raw data export of high-risk customers based on custom SQL query.",
+                "source_type": "custom",
+                "export_format": "csv",
+                "scheduling": {
+                    "enabled": False,
+                    "frequency": None
+                },
+                "created_at": "2024-01-11T14:30:00Z"
+            },
+            {
+                "id": "rpt-003",
+                "name": "Weekly Active Users",
+                "description": None,
+                "source_type": "campaign",
+                "export_format": "excel",
+                "scheduling": {
+                    "enabled": True,
+                    "frequency": "weekly"
+                },
+                "created_at": "2024-01-12T09:15:00Z"
+            },
+            {
+                "id": "rpt-004",
+                "name": "Monthly Transaction Summary",
+                "description": "Summary of all transactions grouped by type and region.",
+                "source_type": "custom",
+                "export_format": "pdf",
+                "scheduling": {
+                    "enabled": True,
+                    "frequency": "monthly"
+                },
+                "created_at": "2024-01-08T16:45:00Z"
+            },
+            {
+                "id": "rpt-005",
+                "name": "Campaign ROI Analysis",
+                "description": "Return on investment analysis for all completed campaigns.",
+                "source_type": "campaign",
+                "export_format": "excel",
+                "scheduling": {
+                    "enabled": False,
+                    "frequency": None
+                },
+                "created_at": "2024-01-09T11:20:00Z"
+            },
+            {
+                "id": "rpt-006",
+                "name": "Daily User Activity Report",
+                "description": "Daily breakdown of user activities and engagement metrics.",
+                "source_type": "custom",
+                "export_format": "csv",
+                "scheduling": {
+                    "enabled": True,
+                    "frequency": "daily"
+                },
+                "created_at": "2024-01-13T08:00:00Z"
+            },
+            {
+                "id": "rpt-007",
+                "name": "Quarterly Business Review",
+                "description": "Comprehensive quarterly business performance review.",
+                "source_type": "campaign",
+                "export_format": "pdf",
+                "scheduling": {
+                    "enabled": True,
+                    "frequency": "monthly"
+                },
+                "created_at": "2024-01-07T14:10:00Z"
+            },
+            {
+                "id": "rpt-008",
+                "name": "Customer Segmentation Export",
+                "description": "Export of customer segments with detailed demographics.",
+                "source_type": "custom",
+                "export_format": "excel",
+                "scheduling": {
+                    "enabled": False,
+                    "frequency": None
+                },
+                "created_at": "2024-01-06T12:30:00Z"
+            },
+            {
+                "id": "rpt-009",
+                "name": "Weekly Churn Risk Alert",
+                "description": "Weekly report on customers at risk of churning.",
+                "source_type": "custom",
+                "export_format": "pdf",
+                "scheduling": {
+                    "enabled": True,
+                    "frequency": "weekly"
+                },
+                "created_at": "2024-01-05T09:45:00Z"
+            },
+            {
+                "id": "rpt-010",
+                "name": "Annual Performance Summary",
+                "description": "Year-end summary of all key performance indicators.",
+                "source_type": "campaign",
+                "export_format": "pdf",
+                "scheduling": {
+                    "enabled": False,
+                    "frequency": None
+                },
+                "created_at": "2024-01-04T15:20:00Z"
+            },
+            # Add more reports to reach 25 total
+            {
+                "id": "rpt-011",
+                "name": "Regional Sales Report",
+                "description": "Sales performance by region and branch.",
+                "source_type": "custom",
+                "export_format": "excel",
+                "scheduling": {
+                    "enabled": True,
+                    "frequency": "monthly"
+                },
+                "created_at": "2024-01-03T10:15:00Z"
+            },
+            {
+                "id": "rpt-012",
+                "name": "Customer Feedback Analysis",
+                "description": "Analysis of customer feedback and satisfaction scores.",
+                "source_type": "custom",
+                "export_format": "pdf",
+                "scheduling": {
+                    "enabled": False,
+                    "frequency": None
+                },
+                "created_at": "2024-01-02T13:40:00Z"
+            },
+            {
+                "id": "rpt-013",
+                "name": "Marketing Campaign Effectiveness",
+                "description": "Effectiveness analysis of marketing campaigns.",
+                "source_type": "campaign",
+                "export_format": "excel",
+                "scheduling": {
+                    "enabled": True,
+                    "frequency": "weekly"
+                },
+                "created_at": "2024-01-01T11:25:00Z"
+            },
+            {
+                "id": "rpt-014",
+                "name": "Product Usage Statistics",
+                "description": "Statistics on product usage and adoption rates.",
+                "source_type": "custom",
+                "export_format": "csv",
+                "scheduling": {
+                    "enabled": True,
+                    "frequency": "daily"
+                },
+                "created_at": "2023-12-31T16:50:00Z"
+            },
+            {
+                "id": "rpt-015",
+                "name": "Financial Reconciliation Report",
+                "description": "Monthly financial reconciliation and variance analysis.",
+                "source_type": "custom",
+                "export_format": "pdf",
+                "scheduling": {
+                    "enabled": True,
+                    "frequency": "monthly"
+                },
+                "created_at": "2023-12-30T14:35:00Z"
+            },
+            {
+                "id": "rpt-016",
+                "name": "User Onboarding Metrics",
+                "description": "Metrics and analysis of user onboarding process.",
+                "source_type": "custom",
+                "export_format": "excel",
+                "scheduling": {
+                    "enabled": False,
+                    "frequency": None
+                },
+                "created_at": "2023-12-29T12:10:00Z"
+            },
+            {
+                "id": "rpt-017",
+                "name": "Service Quality Report",
+                "description": "Report on service quality and response times.",
+                "source_type": "custom",
+                "export_format": "pdf",
+                "scheduling": {
+                    "enabled": True,
+                    "frequency": "weekly"
+                },
+                "created_at": "2023-12-28T09:55:00Z"
+            },
+            {
+                "id": "rpt-018",
+                "name": "Competitor Analysis",
+                "description": "Analysis of competitor performance and market share.",
+                "source_type": "custom",
+                "export_format": "excel",
+                "scheduling": {
+                    "enabled": False,
+                    "frequency": None
+                },
+                "created_at": "2023-12-27T15:40:00Z"
+            },
+            {
+                "id": "rpt-019",
+                "name": "Risk Assessment Report",
+                "description": "Comprehensive risk assessment for business operations.",
+                "source_type": "custom",
+                "export_format": "pdf",
+                "scheduling": {
+                    "enabled": True,
+                    "frequency": "monthly"
+                },
+                "created_at": "2023-12-26T13:25:00Z"
+            },
+            {
+                "id": "rpt-020",
+                "name": "Employee Performance Review",
+                "description": "Quarterly review of employee performance metrics.",
+                "source_type": "custom",
+                "export_format": "excel",
+                "scheduling": {
+                    "enabled": True,
+                    "frequency": "monthly"
+                },
+                "created_at": "2023-12-25T11:05:00Z"
+            },
+            {
+                "id": "rpt-021",
+                "name": "Inventory Management Report",
+                "description": "Weekly inventory levels and management analysis.",
+                "source_type": "custom",
+                "export_format": "csv",
+                "scheduling": {
+                    "enabled": True,
+                    "frequency": "weekly"
+                },
+                "created_at": "2023-12-24T08:50:00Z"
+            },
+            {
+                "id": "rpt-022",
+                "name": "Supplier Performance",
+                "description": "Analysis of supplier performance and reliability.",
+                "source_type": "custom",
+                "export_format": "pdf",
+                "scheduling": {
+                    "enabled": False,
+                    "frequency": None
+                },
+                "created_at": "2023-12-23T14:30:00Z"
+            },
+            {
+                "id": "rpt-023",
+                "name": "Market Research Summary",
+                "description": "Summary of latest market research findings.",
+                "source_type": "custom",
+                "export_format": "excel",
+                "scheduling": {
+                    "enabled": True,
+                    "frequency": "monthly"
+                },
+                "created_at": "2023-12-22T12:15:00Z"
+            },
+            {
+                "id": "rpt-024",
+                "name": "Compliance Audit Report",
+                "description": "Quarterly compliance audit and findings report.",
+                "source_type": "custom",
+                "export_format": "pdf",
+                "scheduling": {
+                    "enabled": True,
+                    "frequency": "monthly"
+                },
+                "created_at": "2023-12-21T10:00:00Z"
+            },
+            {
+                "id": "rpt-025",
+                "name": "IT Security Incident Report",
+                "description": "Monthly report on IT security incidents and responses.",
+                "source_type": "custom",
+                "export_format": "excel",
+                "scheduling": {
+                    "enabled": True,
+                    "frequency": "monthly"
+                },
+                "created_at": "2023-12-20T16:45:00Z"
+            }
+        ]
+        
+        # Apply pagination
+        total = len(all_reports)
+        start_idx = (page - 1) * page_size
+        end_idx = start_idx + page_size
+        paginated_reports = all_reports[start_idx:end_idx]
+        
+        total_pages = (total + page_size - 1) // page_size
+        
+        return {
+            "reports": paginated_reports,
+            "pagination": {
+                "total": total,
+                "page": page,
+                "page_size": page_size,
+                "total_pages": total_pages
+            }
+        }
+    
+    @staticmethod
+    def get_report_detail(report_id):
+        """Generate detailed report data for a specific report ID"""
+        
+        # Mock detailed reports data
+        detailed_reports = {
+            "rpt-001": {
+                "id": "rpt-001",
+                "name": "Q4 Revenue Analysis",
+                "description": "A detailed breakdown of revenue by region and product line for the final quarter.",
+                "source_type": "custom",
+                "export_format": "pdf",
+                "created_at": "2024-01-10T10:00:00Z",
+                "configuration": {
+                    "custom_mode": "filter",
+                    "campaign_id": None,
+                    "sql_query": None,
+                    "filters": [
+                        {
+                            "field": "transaction_value",
+                            "operator": "greater_than",
+                            "value": "1000"
+                        },
+                        {
+                            "field": "region",
+                            "operator": "equals",
+                            "value": "North America"
+                        }
+                    ]
+                },
+                "scheduling": {
+                    "enabled": True,
+                    "frequency": "monthly",
+                    "recipients": ["finance-team@company.com", "exec-office@company.com"]
+                },
+                "history": [
+                    {
+                        "date": "2024-01-15 09:00",
+                        "status": "Success",
+                        "size": "2.4 MB",
+                        "duration": "45s",
+                        "download_url": "/api/reports/download/file-abc.pdf"
+                    },
+                    {
+                        "date": "2024-01-08 09:00",
+                        "status": "Success",
+                        "size": "2.1 MB",
+                        "duration": "42s",
+                        "download_url": "/api/reports/download/file-def.pdf"
+                    }
+                ]
+            },
+            "rpt-002": {
+                "id": "rpt-002",
+                "name": "Customer Segmentation Report",
+                "description": "Analysis of customer segments based on behavior and demographics.",
+                "source_type": "campaign",
+                "export_format": "excel",
+                "created_at": "2024-01-12T14:30:00Z",
+                "configuration": {
+                    "custom_mode": None,
+                    "campaign_id": "camp-123",
+                    "sql_query": None,
+                    "filters": []
+                },
+                "scheduling": {
+                    "enabled": False,
+                    "frequency": None,
+                    "recipients": []
+                },
+                "history": [
+                    {
+                        "date": "2024-01-14 10:15",
+                        "status": "Success",
+                        "size": "1.8 MB",
+                        "duration": "32s",
+                        "download_url": "/api/reports/download/file-ghi.xlsx"
+                    }
+                ]
+            },
+            "rpt-003": {
+                "id": "rpt-003",
+                "name": "Custom SQL Analytics",
+                "description": "Advanced analytics using custom SQL queries for detailed insights.",
+                "source_type": "custom",
+                "export_format": "csv",
+                "created_at": "2024-01-15T09:15:00Z",
+                "configuration": {
+                    "custom_mode": "sql",
+                    "campaign_id": None,
+                    "sql_query": "SELECT region, SUM(revenue) as total_revenue FROM transactions WHERE date >= '2024-01-01' GROUP BY region ORDER BY total_revenue DESC",
+                    "filters": []
+                },
+                "scheduling": {
+                    "enabled": True,
+                    "frequency": "weekly",
+                    "recipients": ["data-team@company.com"]
+                },
+                "history": [
+                    {
+                        "date": "2024-01-16 08:30",
+                        "status": "Success",
+                        "size": "950 KB",
+                        "duration": "28s",
+                        "download_url": "/api/reports/download/file-jkl.csv"
+                    },
+                    {
+                        "date": "2024-01-09 08:30",
+                        "status": "Failed",
+                        "size": None,
+                        "duration": "15s",
+                        "download_url": None
+                    }
+                ]
+            }
+        }
+        
+        return detailed_reports.get(report_id)
+    
+    @staticmethod
+    def update_report_detail(report_id, update_data):
+        """Update an existing report with new data"""
+        
+        # Get existing report
+        existing_report = MockDataGenerator.get_report_detail(report_id)
+        if not existing_report:
+            return None
+        
+        # Create updated report by merging existing data with updates
+        updated_report = existing_report.copy()
+        
+        # Update basic fields
+        if 'name' in update_data:
+            updated_report['name'] = update_data['name']
+        if 'description' in update_data:
+            updated_report['description'] = update_data['description']
+        if 'source_type' in update_data:
+            updated_report['source_type'] = update_data['source_type']
+        if 'export_format' in update_data:
+            updated_report['export_format'] = update_data['export_format']
+        
+        # Update configuration
+        if 'source_config' in update_data:
+            config = update_data['source_config']
+            updated_report['configuration'] = {
+                'custom_mode': config.get('custom_mode'),
+                'campaign_id': config.get('campaign_id'),
+                'sql_query': config.get('sql_query'),
+                'filters': config.get('filters', [])
+            }
+        
+        # Update scheduling
+        if 'scheduling' in update_data:
+            scheduling = update_data['scheduling']
+            updated_report['scheduling'] = {
+                'enabled': scheduling.get('enabled', False),
+                'frequency': scheduling.get('frequency'),
+                'recipients': scheduling.get('recipients', [])
+            }
+        
+        # Note: In a real implementation, this would persist to database
+        # For now, we'll just return the updated data
+        
+        return updated_report

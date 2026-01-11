@@ -1,0 +1,18 @@
+{
+  "method": "POST",
+  "endpoint": "/api/report-configurations/",
+  "description": "Create a report configuration with custom SQL mode",
+  "request_body": {
+    "name": "Revenue Analytics Dashboard",
+    "description": "Daily revenue metrics and trends analysis",
+    "source_type": "custom",
+    "configuration": {
+      "custom_mode": "sql",
+      "sql_query": "SELECT DATE(transaction_date) as date, SUM(amount) as revenue, COUNT(*) as transaction_count FROM transactions WHERE transaction_date >= '2024-01-01' AND status = 'completed' GROUP BY DATE(transaction_date) ORDER BY date DESC LIMIT 30"
+    },
+    "export_format": "csv",
+    "scheduling_enabled": true,
+    "frequency": "daily",
+    "recipients": ["finance@company.com", "ceo@company.com"]
+  }
+}

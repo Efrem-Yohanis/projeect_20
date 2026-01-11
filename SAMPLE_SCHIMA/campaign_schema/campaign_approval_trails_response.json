@@ -1,0 +1,29 @@
+{
+  "status": "success",
+  "approval_trails": [
+    {
+      "id": 1,
+      "campaign": "550e8400-e29b-41d4-a716-446655440000",
+      "approver": {
+        "id": 2,
+        "username": "approver_user",
+        "email": "approver@company.com"
+      },
+      "decision": "approved",
+      "comment": "Campaign approved for execution. Budget and targeting look good.",
+      "created_at": "2023-11-16T11:30:00Z"
+    },
+    {
+      "id": 2,
+      "campaign": "550e8400-e29b-41d4-a716-446655440000",
+      "approver": {
+        "id": 3,
+        "username": "senior_approver",
+        "email": "senior@company.com"
+      },
+      "decision": "approved",
+      "comment": "Final approval granted. Campaign ready for scheduling.",
+      "created_at": "2023-11-16T14:15:00Z"
+    }
+  ]
+}

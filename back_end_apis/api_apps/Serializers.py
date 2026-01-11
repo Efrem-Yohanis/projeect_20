@@ -1,6 +1,6 @@
 # api_apps/serializers.py
 from rest_framework import serializers
-from .models import CustomerSegment, RewardAccount, Campaign, ApprovalTrail
+from .models import CustomerSegment, RewardAccount, Campaign, ApprovalTrail, ReportConfiguration
 
 class CriteriaSerializer(serializers.Serializer):
     """Serializer for segment criteria"""
@@ -530,3 +530,93 @@ class ApprovalTrailSerializer(serializers.ModelSerializer):
             'decision', 'comment', 'created_at'
         ]
         read_only_fields = ['id', 'created_at']
+
+
+class ReportConfigurationSerializer(serializers.ModelSerializer):
+    """Serializer for ReportConfiguration model"""
+    configuration_display = serializers.SerializerMethodField()
+    scheduling_display = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = ReportConfiguration
+        fields = [
+            'id', 'name', 'description', 'source_type', 'configuration',
+            'export_format', 'scheduling_enabled', 'frequency', 'recipients',
+            'is_active', 'created_at', 'updated_at', 'configuration_display',
+            'scheduling_display'
+        ]
+        read_only_fields = ['id', 'created_at', 'updated_at']
+    
+    def get_configuration_display(self, obj):
+        return obj.get_configuration_display()
+    
+    def get_scheduling_display(self, obj):
+        return obj.get_scheduling_display()
+
+
+class ReportConfigurationCreateSerializer(serializers.ModelSerializer):
+    """Serializer for creating ReportConfiguration"""
+    
+    class Meta:
+        model = ReportConfiguration
+        fields = [
+            'name', 'description', 'source_type', 'configuration',
+            'export_format', 'scheduling_enabled', 'frequency', 'recipients',
+            'is_active'
+        ]
+    
+    def validate(self, data):
+        """Validate configuration based on source_type"""
+        source_type = data.get('source_type')
+        configuration = data.get('configuration', {})
+        
+        if source_type == 'campaign':
+            if not configuration.get('campaign_id'):
+                raise serializers.ValidationError({
+                    'configuration': 'campaign_id is required for campaign source type'
+                })
+        elif source_type == 'custom':
+            custom_mode = configuration.get('custom_mode')
+            if custom_mode == 'sql':
+                if not configuration.get('sql_query'):
+                    raise serializers.ValidationError({
+                        'configuration': 'sql_query is required for custom SQL mode'
+                    })
+            elif custom_mode == 'filter':
+                if not configuration.get('filters'):
+                    raise serializers.ValidationError({
+                        'configuration': 'filters are required for custom filter mode'
+                    })
+        
+        # Validate scheduling
+        if data.get('scheduling_enabled'):
+            if not data.get('frequency'):
+                raise serializers.ValidationError({
+                    'frequency': 'Frequency is required when scheduling is enabled'
+                })
+            if not data.get('recipients'):
+                raise serializers.ValidationError({
+                    'recipients': 'Recipients are required when scheduling is enabled'
+                })
+        
+        return data
+
+
+class ReportConfigurationListSerializer(serializers.ModelSerializer):
+    """Serializer for listing ReportConfigurations"""
+    configuration_display = serializers.SerializerMethodField()
+    scheduling_display = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = ReportConfiguration
+        fields = [
+            'id', 'name', 'description', 'source_type', 'export_format',
+            'scheduling_enabled', 'is_active', 'created_at', 'updated_at',
+            'configuration_display', 'scheduling_display'
+        ]
+    
+    def get_configuration_display(self, obj):
+        return obj.get_configuration_display()
+    
+    def get_scheduling_display(self, obj):
+        return obj.get_scheduling_display()

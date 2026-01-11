@@ -1,0 +1,36 @@
+{
+  "method": "GET",
+  "endpoint": "/api/dashboard/churn-risk-distribution/",
+  "description": "Get churn risk distribution analysis",
+  "response": {
+    "status": "success",
+    "analysis": {
+      "timestamp": "2024-10-01T12:00:00Z",
+      "timeframe": "last_30_days",
+      "total_customers_analyzed": 2400000,
+      "distribution": {
+        "low_risk": {
+          "count": 18450,
+          "percentage": 65,
+          "description": "Customers with low probability of churning"
+        },
+        "medium_risk": {
+          "count": 8100,
+          "percentage": 28.5,
+          "description": "Customers showing some risk indicators"
+        },
+        "high_risk": {
+          "count": 2450,
+          "percentage": 8.6,
+          "description": "Customers at high risk of churning",
+          "recommendation": "Launch win-back campaign"
+        }
+      },
+      "summary": {
+        "total_at_high_risk": 2450,
+        "high_risk_percentage": 8.6,
+        "key_insight": "2,450 customers require immediate attention"
+      }
+    }
+  }
+}

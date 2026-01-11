@@ -1,0 +1,46 @@
+{
+  "method": "GET",
+  "endpoint": "/api/dashboard/campaign-performance/",
+  "description": "Get campaign performance metrics",
+  "response": {
+    "status": "success",
+    "campaigns": [
+      {
+        "id": "campaign_1",
+        "name": "Win-back Q4",
+        "performance": 45000,
+        "target": 60000,
+        "completion_rate": 75,
+        "color": "#8b5cf6"
+      },
+      {
+        "id": "campaign_2",
+        "name": "Festive Bonus",
+        "performance": 38000,
+        "target": 45000,
+        "completion_rate": 84.4,
+        "color": "#3b82f6"
+      },
+      {
+        "id": "campaign_3",
+        "name": "New User",
+        "performance": 52000,
+        "target": 30000,
+        "completion_rate": 173.3,
+        "color": "#10b981"
+      },
+      {
+        "id": "campaign_4",
+        "name": "Loyalty Tier",
+        "performance": 28000,
+        "target": 15000,
+        "completion_rate": 186.7,
+        "color": "#f59e0b"
+      }
+    ],
+    "timeframe": "Q4 2024",
+    "total_performance": 163000,
+    "average_completion_rate": 129.85,
+    "updated_at": "2024-10-01T12:00:00Z"
+  }
+}

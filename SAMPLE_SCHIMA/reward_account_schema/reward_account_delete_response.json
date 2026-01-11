@@ -1,0 +1,15 @@
+{
+  "method": "DELETE",
+  "endpoint": "/api/reward-accounts/{account_id}/delete/",
+  "description": "Delete a specific reward account",
+  "path_parameters": {
+    "account_id": {
+      "type": "integer",
+      "description": "ID of the reward account"
+    }
+  },
+  "response": {
+    "status": "success",
+    "message": "Reward account deleted successfully"
+  }
+}

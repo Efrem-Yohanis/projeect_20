@@ -1,0 +1,40 @@
+{
+  "method": "PUT",
+  "endpoint": "/api/segments/{id}/",
+  "description": "Update a specific segment",
+  "request": {
+    "name": "High Value Active Users",
+    "description": "Users with high transaction values",
+    "config": {
+      "autoRefresh": true,
+      "refreshInterval": "daily",
+      "ruleLogic": "AND"
+    },
+    "filters": {
+      "behavioral": {
+        "lastActivityDays": 30,
+        "transactionCount": {
+          "min": 10,
+          "max": null
+        },
+        "transactionValue": {
+          "min": 5000,
+          "max": null
+        },
+        "rewardReceived": null,
+        "churnRisk": null
+      },
+      "demographic": {
+        "region": null,
+        "city": null,
+        "gender": null,
+        "ageGroup": null,
+        "kycLevel": null,
+        "deviceType": null
+      },
+      "value": {
+        "tier": "high"
+      }
+    }
+  }
+}

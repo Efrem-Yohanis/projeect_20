@@ -1,0 +1,63 @@
+{
+  "method": "GET",
+  "endpoint": "/api/dashboard/customer-metrics/",
+  "description": "Get customer metrics data for dashboard",
+  "query_parameters": {
+    "period": {
+      "type": "string",
+      "enum": ["24h", "7d", "30d", "90d"],
+      "default": "24h",
+      "description": "Time period for metrics"
+    }
+  },
+  "response": {
+    "status": "success",
+    "period": "30d",
+    "metrics": {
+      "total_customers": {
+        "current": 2400000,
+        "formatted": "2.4M",
+        "previous_period": 2285714,
+        "change": 5.2,
+        "change_type": "increase"
+      },
+      "active_customers": {
+        "current": 1800000,
+        "formatted": "1.8M",
+        "previous_period": 1746000,
+        "change": 3.1,
+        "change_type": "increase",
+        "threshold_days": 30
+      },
+      "new_registered": {
+        "current": 52000,
+        "formatted": "52K",
+        "previous_period": 46222,
+        "change": 12.5,
+        "change_type": "increase"
+      },
+      "churn_rate": {
+        "current": 4.2,
+        "formatted": "4.2%",
+        "previous_period": 5.0,
+        "change": -0.8,
+        "change_type": "decrease"
+      },
+      "dormant_customers": {
+        "current": 420000,
+        "formatted": "420K",
+        "previous_period": 430000,
+        "change": -2.4,
+        "change_type": "decrease",
+        "threshold_days": 90
+      }
+    },
+    "date_ranges": {
+      "current_period_start": "2024-09-01T12:00:00Z",
+      "current_period_end": "2024-10-01T12:00:00Z",
+      "previous_period_start": "2024-08-02T12:00:00Z",
+      "previous_period_end": "2024-09-01T12:00:00Z"
+    },
+    "updated_at": "2024-10-01T12:00:00Z"
+  }
+}

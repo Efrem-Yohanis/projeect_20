@@ -1,0 +1,78 @@
+{
+  "method": "GET",
+  "endpoint": "/api/customer/{customer_id}/",
+  "description": "Get detailed customer profile, metrics, AI insights, and activity data",
+  "path_parameters": {
+    "customer_id": {
+      "type": "string",
+      "description": "Customer MSISDN or unique identifier",
+      "example": "254712456789"
+    }
+  },
+  "query_parameters": {},
+  "response": {
+    "profile": {
+      "msisdn": "254712456789",
+      "name": "Jane Wanjiku",
+      "initials": "JW",
+      "status": "Active",
+      "tier": "Gold",
+      "kycLevel": "Full KYC",
+      "demographics": {
+        "gender": "Female",
+        "age": 32,
+        "region": "Nairobi",
+        "city": "Westlands"
+      },
+      "dates": {
+        "registered": "2021-03-15",
+        "lastActive": "2024-01-15T14:32:00Z"
+      }
+    },
+    "metrics": {
+      "lifetimeValue": 245000,
+      "monthlyAvg": 12500,
+      "currency": "KES"
+    },
+    "aiInsights": {
+      "churnScore": 15,
+      "churnRisk": "Low",
+      "recommendedAction": "Offer tier upgrade to Platinum"
+    },
+    "activities": {
+      "transactions": [
+        {
+          "id": "tx_101",
+          "date": "2024-01-15 14:32",
+          "type": "Send Money",
+          "amount": 2500,
+          "status": "Completed"
+        },
+        {
+          "id": "tx_102",
+          "date": "2024-01-14 09:15",
+          "type": "Pay Bill",
+          "amount": 5000,
+          "status": "Completed"
+        }
+      ],
+      "campaigns": [
+        {
+          "id": "cmp_501",
+          "name": "Festive Rewards",
+          "date": "2024-01-05",
+          "status": "Delivered",
+          "reward": "KES 50"
+        }
+      ],
+      "messages": [
+        {
+          "id": "msg_901",
+          "date": "2024-01-15",
+          "channel": "SMS",
+          "content": "Your M-Pesa balance is..."
+        }
+      ]
+    }
+  }
+}

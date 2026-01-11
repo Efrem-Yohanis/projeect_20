@@ -1,0 +1,34 @@
+{
+  "method": "POST",
+  "endpoint": "/api/report-configurations/",
+  "description": "Create a report configuration with custom filter mode",
+  "request_body": {
+    "name": "Customer Churn Analysis",
+    "description": "Weekly analysis of customer churn patterns and risk factors",
+    "source_type": "custom",
+    "configuration": {
+      "custom_mode": "filter",
+      "filters": [
+        {
+          "field": "registration_date",
+          "operator": "greater_than",
+          "value": "2023-01-01"
+        },
+        {
+          "field": "churn_score",
+          "operator": "greater_than",
+          "value": "70"
+        },
+        {
+          "field": "status",
+          "operator": "equals",
+          "value": "active"
+        }
+      ]
+    },
+    "export_format": "excel",
+    "scheduling_enabled": true,
+    "frequency": "weekly",
+    "recipients": ["analyst@company.com", "manager@company.com"]
+  }
+}

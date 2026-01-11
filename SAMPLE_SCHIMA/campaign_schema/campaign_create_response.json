@@ -1,0 +1,18 @@
+{
+  "success": true,
+  "message": "Campaign submitted for approval successfully",
+  "data": {
+    "campaignId": "CAMP_550E8400",
+    "status": "Draft",
+    "createdAt": "2024-01-15T10:30:00Z",
+    "validationSummary": {
+      "estimatedCost": 25000.0,
+      "accountBalanceRemaining": 975000.0,
+      "conflictingCampaigns": 0
+    },
+    "approvalWorkflow": {
+      "currentStage": "Department Head",
+      "nextApprover": "Marketing Manager"
+    }
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "success": true,
+  "campaignId": "CAMP_550E8400",
+  "data": {
+    "header": {
+      "name": "Holiday Shopping Campaign",
+      "status": "Running",
+      "type": "Incentive",
+      "owner": "campaign_manager",
+      "createdDate": "2023-11-01",
+      "objective": "Boost holiday season sales"
+    },
+    "overview": {
+      "summary": {
+        "description": "Provide special discounts and rewards during holiday shopping period",
+        "scheduleType": "Scheduled",
+        "frequencyCap": "Once per customer"
+      },
+      "rewards": {
+        "type": "Cashback",
+        "value": "15.00 ETB",
+        "dailyCap": "500 ETB",
+        "perCustomerCap": "2000 ETB",
+        "account": "Holiday Rewards Account",
+        "estimatedCost": "75,000.00 ETB"
+      },
+      "channels": [
+        {
+          "type": "SMS",
+          "enabled": true,
+          "priority": 1,
+          "cap": 100000,
+          "content": [
+            {
+              "lang": "English",
+              "text": "🎄 Holiday Special! Get 15% cashback on your next purchase!"
+            },
+            {
+              "lang": "Amharic",
+              "text": "🎄 የበዓል ልዩ ቅናሽ! በሚቀጥለው ገዢዎ ላይ 15% ገንዘብ ተመላሽ ያገኙ!"
+            }
+          ]
+        },
+        {
+          "type": "EMAIL",
+          "enabled": true,
+          "priority": 2,
+          "cap": 50000,
+          "content": [
+            {
+              "lang": "English",
+              "text": "Dear valued customer, enjoy our holiday shopping rewards program!"
+            },
+            {
+              "lang": "Amharic",
+              "text": "የተወዳጅ የተለመደ የበዓል ገዢ ሽልማቶች ፕሮግራም ይምሰዱ!"
+            }
+          ]
+        }
+      ],
+      "approvals": [
+        {
+          "status": "Approved",
+          "comment": "Approved for holiday season execution",
+          "date": "2023-11-15 02:30 PM"
+        },
+        {
+          "status": "Approved",
+          "comment": "Budget allocation confirmed",
+          "date": "2023-11-10 11:15 AM"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "method": "POST",
+  "endpoint": "/api/report-configurations/",
+  "description": "Create a new report configuration",
+  "request_body": {
+    "name": "Monthly Campaign Performance Report",
+    "description": "Brief description of the report purpose...",
+    "source_type": "campaign",
+    "configuration": {
+      "campaign_id": "camp-1"
+    },
+    "export_format": "pdf",
+    "scheduling_enabled": true,
+    "frequency": "weekly",
+    "recipients": ["user@example.com", "admin@company.com"]
+  },
+  "response": {
+    "status": "success",
+    "message": "Report configuration created successfully",
+    "data": {
+      "id": "550e8400-e29b-41d4-a716-446655440001",
+      "name": "Monthly Campaign Performance Report",
+      "description": "Brief description of the report purpose...",
+      "source_type": "campaign",
+      "configuration": {
+        "campaign_id": "camp-1"
+      },
+      "export_format": "pdf",
+      "scheduling_enabled": true,
+      "frequency": "weekly",
+      "recipients": ["user@example.com", "admin@company.com"],
+      "is_active": true,
+      "created_at": "2024-01-15T10:00:00Z",
+      "updated_at": "2024-01-15T10:00:00Z"
+    }
+  }
+}

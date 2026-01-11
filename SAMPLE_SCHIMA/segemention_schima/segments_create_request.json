@@ -1,0 +1,41 @@
+{
+  "method": "POST",
+  "endpoint": "/api/segments/create/",
+  "description": "Create a new segment",
+  "request": {
+    "name": "High Value Addis Customers",
+    "description": "Active users in Addis Ababa with high transaction volume",
+    "config": {
+      "autoRefresh": true,
+      "refreshInterval": "daily",
+      "ruleLogic": "AND",
+      "status": "active"
+    },
+    "filters": {
+      "behavioral": {
+        "lastActivityDays": 30,
+        "transactionCount": {
+          "min": 10,
+          "max": 100
+        },
+        "transactionValue": {
+          "min": 5000,
+          "max": 50000
+        },
+        "rewardReceived": "yes",
+        "churnRisk": "low"
+      },
+      "demographic": {
+        "region": "addis-ababa",
+        "city": "addis",
+        "gender": "female",
+        "ageGroup": "25-34",
+        "kycLevel": "verified",
+        "deviceType": "smartphone"
+      },
+      "value": {
+        "tier": "high"
+      }
+    }
+  }
+}

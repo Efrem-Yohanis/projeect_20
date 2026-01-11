@@ -241,3 +241,78 @@ class ApprovalTrail(models.Model):
         return f"{self.campaign.name} - {self.approver.username} - {self.decision}"
 
 
+class ReportConfiguration(models.Model):
+    """
+    Model for storing report configurations for automated reporting
+    """
+    
+    class SourceType(models.TextChoices):
+        CAMPAIGN = 'campaign', 'Campaign'
+        CUSTOM = 'custom', 'Custom'
+    
+    class CustomMode(models.TextChoices):
+        SQL = 'sql', 'SQL Query'
+        FILTER = 'filter', 'Filter Builder'
+    
+    class ExportFormat(models.TextChoices):
+        PDF = 'pdf', 'PDF'
+        EXCEL = 'excel', 'Excel'
+        CSV = 'csv', 'CSV'
+    
+    class Frequency(models.TextChoices):
+        DAILY = 'daily', 'Daily'
+        WEEKLY = 'weekly', 'Weekly'
+        MONTHLY = 'monthly', 'Monthly'
+    
+    # Basic Information
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=255)
+    description = models.TextField(blank=True)
+    source_type = models.CharField(max_length=20, choices=SourceType.choices, default=SourceType.CUSTOM)
+    
+    # Configuration
+    configuration = models.JSONField(default=dict, help_text="Report configuration details")
+    
+    # Export settings
+    export_format = models.CharField(max_length=10, choices=ExportFormat.choices, default=ExportFormat.PDF)
+    
+    # Scheduling
+    scheduling_enabled = models.BooleanField(default=False)
+    frequency = models.CharField(max_length=10, choices=Frequency.choices, blank=True)
+    recipients = models.JSONField(default=list, help_text="List of email recipients")
+    
+    # Metadata
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    
+    class Meta:
+        db_table = 'report_configurations'
+        verbose_name = 'Report Configuration'
+        verbose_name_plural = 'Report Configurations'
+        ordering = ['-created_at']
+    
+    def __str__(self):
+        return self.name
+    
+    def get_configuration_display(self):
+        """Return a human-readable configuration summary"""
+        if self.source_type == self.SourceType.CAMPAIGN:
+            campaign_id = self.configuration.get('campaign_id', 'N/A')
+            return f"Campaign Report: {campaign_id}"
+        else:
+            mode = self.configuration.get('custom_mode', 'filter')
+            if mode == 'sql':
+                return "Custom SQL Query"
+            else:
+                filters_count = len(self.configuration.get('filters', []))
+                return f"Custom Filter ({filters_count} filters)"
+    
+    def get_scheduling_display(self):
+        """Return scheduling information"""
+        if not self.scheduling_enabled:
+            return "Not scheduled"
+        return f"{self.frequency.title()} to {len(self.recipients)} recipients"
+
+

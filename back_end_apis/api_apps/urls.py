@@ -6,6 +6,7 @@ from .views import (
     ChurnRiskDistributionAPI,
     CampaignPerformanceAPI,
     RecentCampaignsAPI,
+    CustomerViewAPI,
     DashboardSummaryAPI,
     SegmentListAPI,
     SegmentCreateAPI,
@@ -26,10 +27,17 @@ from .views import (
     CampaignChannelsAPI,
     CampaignRewardsAPI,
     CampaignPerformanceAPI as CampaignPerformanceTabAPI,
-    CampaignLogsAPI
+    CampaignLogsAPI,
+    ReportConfigurationListAPI,
+    ReportConfigurationDetailAPI,
+    ReportsListAPI,
+    ReportDetailAPI
 )
 
 urlpatterns = [
+    # Customer API
+    path('customer/<str:customer_id>/', CustomerViewAPI.as_view(), name='customer-view'),
+    
     # Individual APIs
     path('customer-metrics/', CustomerMetricsAPI.as_view(), name='customer-metrics'),
     path('activity-trend/', ActivityTrendAPI.as_view(), name='activity-trend'),
@@ -65,4 +73,12 @@ urlpatterns = [
     path('campaigns/<uuid:campaign_id>/rewards/', CampaignRewardsAPI.as_view(), name='campaign-rewards'),
     path('campaigns/<uuid:campaign_id>/performance/', CampaignPerformanceTabAPI.as_view(), name='campaign-performance-tab'),
     path('campaigns/<uuid:campaign_id>/logs/', CampaignLogsAPI.as_view(), name='campaign-logs'),
+
+    # Report Configuration APIs
+    path('report-configurations/', ReportConfigurationListAPI.as_view(), name='report-configuration-list'),
+    path('report-configurations/<uuid:config_id>/', ReportConfigurationDetailAPI.as_view(), name='report-configuration-detail'),
+
+    # Reports API
+    path('reports/', ReportsListAPI.as_view(), name='reports-list'),
+    path('reports/<str:report_id>/', ReportDetailAPI.as_view(), name='report-detail'),
 ]

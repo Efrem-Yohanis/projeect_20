@@ -1,0 +1,50 @@
+{
+  "status": "success",
+  "campaigns": [
+    {
+      "id": 6998191539780812402141985222927817483,
+      "name": "Summer Cashback Campaign",
+      "type": "Incentive",
+      "segment": "High Value Customers",
+      "channels": ["SMS", "Email"],
+      "status": "Running",
+      "startDate": "2024-06-01",
+      "endDate": "2024-08-31"
+    },
+    {
+      "id": 6998191539780812402141985222927817484,
+      "name": "Holiday Shopping Campaign",
+      "type": "Incentive",
+      "segment": "Active Shoppers",
+      "channels": ["SMS", "Email", "Push"],
+      "status": "Scheduled",
+      "startDate": "2023-12-01",
+      "endDate": "2023-12-31"
+    },
+    {
+      "id": 6998191539780812402141985222927817485,
+      "name": "Customer Retention Program",
+      "type": "Win-back",
+      "segment": "Dormant Customers",
+      "channels": ["Email"],
+      "status": "Draft",
+      "startDate": null,
+      "endDate": null
+    }
+  ],
+  "pagination": {
+    "total": 25,
+    "page": 1,
+    "page_size": 10,
+    "total_pages": 3
+  },
+  "summary": {
+    "total_campaigns": 25,
+    "active_campaigns": 5,
+    "total_estimated_cost": 250000.0,
+    "formatted_total_cost": "250,000.00 ETB"
+  }
+}
+    "completed_campaigns": 12
+  }
+}

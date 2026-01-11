@@ -1,0 +1,47 @@
+{
+  "method": "GET",
+  "endpoint": "/api/dashboard/recent-campaigns/",
+  "description": "Get recent campaigns data",
+  "response": {
+    "status": "success",
+    "campaigns": [
+      {
+        "id": "campaign_001",
+        "name": "Meskel Season Rewards",
+        "delivered": 42300,
+        "target": 45000,
+        "progress": 94,
+        "status": "running",
+        "start_date": "2024-09-27T00:00:00Z",
+        "end_date": "2024-10-05T23:59:59Z",
+        "type": "seasonal"
+      },
+      {
+        "id": "campaign_002",
+        "name": "Timket Win-back",
+        "delivered": 25600,
+        "target": 28000,
+        "progress": 91.4,
+        "status": "running",
+        "start_date": "2024-01-05T00:00:00Z",
+        "end_date": "2024-01-20T23:59:59Z",
+        "type": "retention"
+      },
+      {
+        "id": "campaign_003",
+        "name": "Genna Alert",
+        "delivered": 148500,
+        "target": 150000,
+        "progress": 99,
+        "status": "completed",
+        "start_date": "2023-12-20T00:00:00Z",
+        "end_date": "2024-01-07T23:59:59Z",
+        "type": "holiday"
+      }
+    ],
+    "total_running": 2,
+    "total_completed": 1,
+    "overall_delivery_rate": 94.8,
+    "updated_at": "2024-10-01T12:00:00Z"
+  }
+}

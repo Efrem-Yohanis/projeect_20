@@ -1,0 +1,30 @@
+{
+  "method": "POST",
+  "endpoint": "/api/reward-accounts/create/",
+  "description": "Create a new reward account",
+  "request_body": {
+    "account_id": "ACC_003",
+    "account_name": "New Year Promotion Fund",
+    "balance": 15000.00,
+    "currency": "ETB",
+    "status": "active"
+  },
+  "response": {
+    "status": "success",
+    "message": "Reward account created successfully",
+    "account": {
+      "id": 3,
+      "account_id": "ACC_003",
+      "account_name": "New Year Promotion Fund",
+      "balance": 15000.00,
+      "formatted_balance": "15,000.00 ETB",
+      "currency": "ETB",
+      "status": "active",
+      "is_available": true,
+      "assigned_campaigns_count": 0,
+      "assigned_campaigns": [],
+      "created_at": "2024-01-15T12:00:00Z",
+      "updated_at": "2024-01-15T12:00:00Z"
+    }
+  }
+}

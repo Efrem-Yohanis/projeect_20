@@ -1,0 +1,52 @@
+{
+  "method": "PUT",
+  "endpoint": "/api/segments/{id}/",
+  "description": "Update a specific segment - Success Response",
+  "response": {
+    "status": "success",
+    "message": "Segment updated successfully",
+    "segment": {
+      "id": "seg_001",
+      "name": "High Value Active Users",
+      "description": "Users with high transaction values",
+      "segment_type": "behavioral",
+      "customer_count": 125000,
+      "formatted_customer_count": "125,000",
+      "last_refresh": "2024-01-15T14:30:00Z",
+      "created_at": "2024-01-10T09:15:00Z",
+      "updated_at": "2024-01-15T14:30:00Z",
+      "auto_refresh": true,
+      "refresh_interval": "daily",
+      "criteria": {
+        "behavioral": {
+          "lastActivityDays": 30,
+          "transactionCount": {
+            "min": 10,
+            "max": null
+          },
+          "transactionValue": {
+            "min": 5000,
+            "max": null
+          },
+          "rewardReceived": null,
+          "churnRisk": null
+        },
+        "demographic": {
+          "region": null,
+          "city": null,
+          "gender": null,
+          "ageGroup": null,
+          "kycLevel": null,
+          "deviceType": null
+        },
+        "value": {
+          "tier": "high"
+        },
+        "rule_logic": "AND"
+      },
+      "metadata": {},
+      "action": "view",
+      "is_active": true
+    }
+  }
+}

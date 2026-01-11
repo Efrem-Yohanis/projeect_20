@@ -1,0 +1,99 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Edit Report Request",
+  "description": "Schema for PUT /api/reports/:id request body",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Name of the report",
+      "example": "Updated Q4 Revenue Analysis"
+    },
+    "description": {
+      "type": "string",
+      "description": "Detailed description of the report",
+      "example": "An updated detailed breakdown of revenue by region and product line for the final quarter."
+    },
+    "source_type": {
+      "type": "string",
+      "enum": ["campaign", "custom"],
+      "description": "Type of data source for the report"
+    },
+    "source_config": {
+      "type": "object",
+      "description": "Configuration for the data source",
+      "properties": {
+        "custom_mode": {
+          "type": "string",
+          "enum": ["sql", "filter"],
+          "description": "Mode for custom reports (required when source_type is 'custom')"
+        },
+        "campaign_id": {
+          "type": "string",
+          "description": "ID of the campaign (required when source_type is 'campaign')",
+          "example": "camp-123"
+        },
+        "sql_query": {
+          "type": "string",
+          "description": "Custom SQL query (required when custom_mode is 'sql')",
+          "example": "SELECT region, SUM(revenue) as total_revenue FROM transactions WHERE date >= '2024-01-01' GROUP BY region ORDER BY total_revenue DESC"
+        },
+        "filters": {
+          "type": "array",
+          "description": "Array of filter conditions (required when custom_mode is 'filter')",
+          "items": {
+            "type": "object",
+            "properties": {
+              "field": {
+                "type": "string",
+                "description": "Field name to filter on",
+                "example": "transaction_value"
+              },
+              "operator": {
+                "type": "string",
+                "enum": ["equals", "greater_than", "less_than", "contains", "not_equals"],
+                "description": "Comparison operator"
+              },
+              "value": {
+                "type": "string",
+                "description": "Value to compare against",
+                "example": "1000"
+              }
+            },
+            "required": ["field", "operator", "value"]
+          }
+        }
+      }
+    },
+    "export_format": {
+      "type": "string",
+      "enum": ["pdf", "excel", "csv"],
+      "description": "Format in which the report should be exported"
+    },
+    "scheduling": {
+      "type": "object",
+      "description": "Scheduling configuration for automated report generation",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Whether automated scheduling is enabled"
+        },
+        "frequency": {
+          "type": "string",
+          "enum": ["daily", "weekly", "monthly"],
+          "description": "How often the report should be generated (required if enabled is true)"
+        },
+        "recipients": {
+          "type": "array",
+          "description": "List of email addresses to receive the report (required if enabled is true)",
+          "items": {
+            "type": "string",
+            "format": "email",
+            "example": "finance-team@company.com"
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

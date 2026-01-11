@@ -1,0 +1,20 @@
+{
+  "method": "POST",
+  "endpoint": "/api/reports/",
+  "description": "Create a report with custom SQL query",
+  "request_body": {
+    "name": "Customer Churn SQL Export",
+    "description": "Raw data export of high-risk customers based on custom SQL query.",
+    "source_type": "custom",
+    "source_config": {
+      "campaign_id": null,
+      "custom_mode": "sql",
+      "sql_query": "SELECT * FROM customers WHERE transaction_count > 10",
+      "filters": []
+    },
+    "export_format": "csv",
+    "scheduling": {
+      "enabled": false
+    }
+  }
+}

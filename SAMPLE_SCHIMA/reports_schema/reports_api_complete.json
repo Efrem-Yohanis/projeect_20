@@ -1,0 +1,246 @@
+{
+  "endpoints": [
+    {
+      "method": "GET",
+      "endpoint": "/api/reports/",
+      "description": "Get list of reports with pagination",
+      "query_parameters": {
+        "page": {
+          "type": "integer",
+          "default": 1,
+          "description": "Page number for pagination",
+          "minimum": 1
+        },
+        "page_size": {
+          "type": "integer",
+          "default": 10,
+          "description": "Number of reports per page",
+          "minimum": 1,
+          "maximum": 100
+        }
+      },
+      "response": {
+        "reports": [
+          {
+            "id": "rpt-001",
+            "name": "Q4 Revenue Analysis",
+            "description": "A detailed breakdown of revenue by region and product line for the final quarter.",
+            "source_type": "campaign",
+            "export_format": "pdf",
+            "scheduling": {
+              "enabled": true,
+              "frequency": "monthly"
+            },
+            "created_at": "2024-01-10T10:00:00Z"
+          }
+        ],
+        "pagination": {
+          "total": 25,
+          "page": 1,
+          "page_size": 10,
+          "total_pages": 3
+        }
+      }
+    },
+    {
+      "method": "POST",
+      "endpoint": "/api/reports/",
+      "description": "Create a new report and queue it for generation",
+      "request_body": {
+        "name": "Monthly Campaign Performance Report",
+        "description": "Analysis of the Holiday Cashback Promo results.",
+        "source_type": "campaign",
+        "source_config": {
+          "campaign_id": "camp-1",
+          "custom_mode": null,
+          "sql_query": null,
+          "filters": []
+        },
+        "export_format": "pdf",
+        "scheduling": {
+          "enabled": true,
+          "frequency": "weekly",
+          "recipients": ["manager@company.com", "analyst@company.com"]
+        }
+      },
+      "response": {
+        "success": true,
+        "message": "Report created and queued for generation.",
+        "data": {
+          "id": "rpt-9923",
+          "name": "Monthly Campaign Performance Report",
+          "status": "pending",
+          "created_at": "2026-01-11T11:35:00Z"
+        }
+      }
+    },
+    {
+      "method": "GET",
+      "endpoint": "/api/reports/{report_id}",
+      "description": "Get detailed information about a specific report including configuration and history",
+      "path_parameters": {
+        "report_id": {
+          "type": "string",
+          "description": "Unique identifier for the report",
+          "example": "rpt-001"
+        }
+      },
+      "response": {
+        "success": true,
+        "data": {
+          "id": "rpt-001",
+          "name": "Q4 Revenue Analysis",
+          "description": "A detailed breakdown of revenue by region and product line for the final quarter.",
+          "source_type": "custom",
+          "export_format": "pdf",
+          "created_at": "2024-01-10T10:00:00Z",
+          "configuration": {
+            "custom_mode": "filter",
+            "campaign_id": null,
+            "sql_query": null,
+            "filters": [
+              {
+                "field": "transaction_value",
+                "operator": "greater_than",
+                "value": "1000"
+              },
+              {
+                "field": "region",
+                "operator": "equals",
+                "value": "North America"
+              }
+            ]
+          },
+          "scheduling": {
+            "enabled": true,
+            "frequency": "monthly",
+            "recipients": ["finance-team@company.com", "exec-office@company.com"]
+          },
+          "history": [
+            {
+              "date": "2024-01-15 09:00",
+              "status": "Success",
+              "size": "2.4 MB",
+              "duration": "45s",
+              "download_url": "/api/reports/download/file-abc.pdf"
+            },
+            {
+              "date": "2024-01-08 09:00",
+              "status": "Success",
+              "size": "2.1 MB",
+              "duration": "42s",
+              "download_url": "/api/reports/download/file-def.pdf"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "method": "PUT",
+      "endpoint": "/api/reports/{report_id}",
+      "description": "Update an existing report configuration",
+      "path_parameters": {
+        "report_id": {
+          "type": "string",
+          "description": "Unique identifier for the report to update",
+          "example": "rpt-001"
+        }
+      },
+      "request_body": {
+        "name": "Updated Q4 Revenue Analysis",
+        "description": "An updated detailed breakdown of revenue by region and product line for the final quarter.",
+        "source_type": "custom",
+        "source_config": {
+          "custom_mode": "filter",
+          "filters": [
+            {
+              "field": "transaction_value",
+              "operator": "greater_than",
+              "value": "1500"
+            },
+            {
+              "field": "region",
+              "operator": "equals",
+              "value": "North America"
+            }
+          ]
+        },
+        "export_format": "excel",
+        "scheduling": {
+          "enabled": true,
+          "frequency": "weekly",
+          "recipients": ["finance-team@company.com", "exec-office@company.com"]
+        }
+      },
+      "response": {
+        "success": true,
+        "message": "Report updated successfully.",
+        "data": {
+          "id": "rpt-001",
+          "name": "Updated Q4 Revenue Analysis",
+          "description": "An updated detailed breakdown of revenue by region and product line for the final quarter.",
+          "source_type": "custom",
+          "export_format": "excel",
+          "created_at": "2024-01-10T10:00:00Z",
+          "configuration": {
+            "custom_mode": "filter",
+            "campaign_id": null,
+            "sql_query": null,
+            "filters": [
+              {
+                "field": "transaction_value",
+                "operator": "greater_than",
+                "value": "1500"
+              },
+              {
+                "field": "region",
+                "operator": "equals",
+                "value": "North America"
+              }
+            ]
+          },
+          "scheduling": {
+            "enabled": true,
+            "frequency": "weekly",
+            "recipients": ["finance-team@company.com", "exec-office@company.com"]
+          },
+          "history": [
+            {
+              "date": "2024-01-15 09:00",
+              "status": "Success",
+              "size": "2.4 MB",
+              "duration": "45s",
+              "download_url": "/api/reports/download/file-abc.pdf"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "source_config_examples": {
+    "campaign_mode": {
+      "campaign_id": "camp-1",
+      "custom_mode": null,
+      "sql_query": null,
+      "filters": []
+    },
+    "custom_sql_mode": {
+      "campaign_id": null,
+      "custom_mode": "sql",
+      "sql_query": "SELECT * FROM customers WHERE transaction_count > 10",
+      "filters": []
+    },
+    "custom_filter_mode": {
+      "campaign_id": null,
+      "custom_mode": "filter",
+      "sql_query": null,
+      "filters": [
+        {
+          "field": "registration_date",
+          "operator": "greater_than",
+          "value": "2023-01-01"
+        }
+      ]
+    }
+  }
+}

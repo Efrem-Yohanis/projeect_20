@@ -1,0 +1,47 @@
+{
+  "method": "GET",
+  "endpoint": "/api/report-configurations/",
+  "description": "Get list of all report configurations",
+  "query_parameters": {
+    "page": {
+      "type": "integer",
+      "default": 1,
+      "description": "Page number for pagination"
+    },
+    "page_size": {
+      "type": "integer",
+      "default": 10,
+      "description": "Number of items per page"
+    },
+    "is_active": {
+      "type": "boolean",
+      "description": "Filter by active status"
+    }
+  },
+  "response": {
+    "status": "success",
+    "count": 3,
+    "results": [
+      {
+        "id": "550e8400-e29b-41d4-a716-446655440001",
+        "name": "Monthly Campaign Performance Report",
+        "description": "Comprehensive monthly report on campaign performance metrics",
+        "source_type": "campaign",
+        "configuration": {
+          "campaign_id": "camp-1"
+        },
+        "export_format": "pdf",
+        "scheduling": {
+          "enabled": true,
+          "frequency": "monthly",
+          "recipients": ["manager@company.com", "analyst@company.com"]
+        },
+        "is_active": true,
+        "created_at": "2024-01-01T10:00:00Z",
+        "updated_at": "2024-01-15T14:30:00Z",
+        "configuration_display": "Campaign Report: camp-1",
+        "scheduling_display": "Monthly to 2 recipients"
+      }
+    ]
+  }
+}
